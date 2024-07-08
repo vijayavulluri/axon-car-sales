@@ -1,0 +1,52 @@
+-- Customers: stores customer’s data.
+select * from classicmodels.customers;
+
+
+-- Products: stores a list of scale model cars.
+select * from classicmodels.products;
+select productLine from classicmodels.products where productLine like '%cars';
+
+
+
+-- ProductLines: stores a list of product line categories.
+select * from classicmodels.productLines;
+select productLine as categories from classicmodels.productLines;
+
+
+-- Orders: stores sales orders placed by customers.
+select orderNumber from classicmodels.orders join classicmodels.customers
+on classicmodels.customers.customerNumber=classicmodels.orders.customerNumber;
+
+
+
+-- OrderDetails: stores sales order line items for each sales order.
+select orderLineNumber from classicmodels.orderdetails join classicmodels.orders on
+classicmodels.orderdetails.orderNumber=classicmodels.orders.orderNumber;
+
+-- Payments: stores payments made by customers based on their accounts.
+select * from classicmodels.payments;
+create view payment_cust as 
+select customers.customerNumber,customers.customerName,classicmodels.payments.amount from
+ classicmodels.customers join
+ classicmodels.payments on
+ classicmodels.customers.customerNumber=classicmodels.payments.customerNumber;
+
+-- Employees: stores all employee information as well as the organization structure such as who reports to whom.
+    select * from classicmodels.employees as e;
+    select * from classicmodels.customers as ct;
+    select e.employeeNumber,concat(e.firstName,'',e.lastName) as employee_name,
+    ct.customerName as supervisor_name from classicmodels.employees e
+    join classicmodels.customers ct on
+    classicmodels.e.reportsTo=classicmodels.ct.salesRepEmployeeNumber;
+
+-- Offices: stores sales office data
+select employees.employeeNumber,employees.firstName, employees.lastName,
+employees.jobTitle,offices.city,offices.addressLine1 as Address,offices.country,offices.state
+from classicmodels.employees join classicmodels.offices
+on employees.officeCode=offices.officeCode;
+
+
+
+
+
+
